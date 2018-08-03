@@ -1,0 +1,38 @@
+@import repository.{Post, Page}
+@import helper._
+@(postForm: Form[Post], serviceGrps: Seq[(String, String)])(implicit requestHeader: MessagesRequestHeader)
+@import templating.BSVersion
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
+
+
+
+@views.html.admin.aLayout(title = "Post Add") {
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Viết bài mới</h5></div>
+                <div class="col-lg-6"></div>
+            </div>
+        </div>
+        <div class="card-body">
+            @b4.formCSRF(routes.PostController.save()) {
+                @b4.text(postForm("name"), '_label -> "Tên bài", '_help -> "0 đến 255 ký tự")
+                <!--@b4.text(postForm("url"), '_label -> "Link truy cập", '_help -> "0 đến 255 ký tự, không dấu, không cách")-->
+                @b4.select(postForm("service_id"), serviceGrps, '_label -> "Nhóm dịch vụ", '_default -> "Chọn nhóm")
+                @b4.file(postForm("image-in"), '_label -> "Hình đại diện", '_custom -> true, 'id -> "select-image", '_help -> "0 đến 100KB")
+                @b4.button('class -> "btn btn-info see-image"){ <i class="far fa-images"></i> Xem hình }
+                @b4.hidden(postForm("image"), '_label -> "Hình đại diện", 'id -> "image")
+                @b4.textarea(postForm("content"), '_label -> "Nội dung", 'maxlength -> "100", '_help -> "0 đến 150000 ký tự")
+                @b4.static(){ <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="confirm" required>
+                                <label class="custom-control-label" for="confirm">
+                                    Xác nhận tạo bài viết này
+                                </label>
+                            </div>
+                }
+                @b4.buttonType("submit", 'class -> "btn btn-primary"){ <i class="far fa-save"></i> Lưu bài viết }
+            }
+        </div>
+    </div>
+}

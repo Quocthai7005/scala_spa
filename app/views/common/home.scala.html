@@ -1,0 +1,60 @@
+@import repository.{ServiceGrp, ServiceDtl}
+@(serviceGrps: List[ServiceGrp], serviceDtls: List[ServiceDtl])(implicit req: play.api.mvc.RequestHeader)
+
+@linkServiceDtlList(id: Int) = @{
+    routes.ServiceDtlController.serviceDtlList(id)
+}
+
+@linkServiceDtl(id: Int) = @{
+    routes.ServiceDtlController.serviceDtl(id)
+}
+
+@views.html.base.layout(title = "Home") {
+
+    <!-- Service groups -->
+    <div class="content">
+        <div class="intro-text">
+            <h2>Lorem Ipsum</h2>
+            <p>Sometimes you need a second page-specific content block for a sidebar or breadcrumb trail, for example. You can do this with an additional parameter</p>
+        </div>
+        <div class="row services-ctn">
+            @for(serviceGrp <- serviceGrps) {
+                <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                    <a href="@linkServiceDtlList(serviceGrp.id.get)">
+                        <div class="card service-card">
+                            <img class="card-img-top" src="@serviceGrp.image" alt="@serviceGrp.name">
+                            <div class="card-body">
+                                <p class="card-text">@serviceGrp.name</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Services -->
+    <div class="content">
+        <div class="intro-text">
+            <h2>Lorem Ipsum</h2>
+            <p>Sometimes you need a second page-specific content block for a sidebar or breadcrumb trail, for example. You can do this with an additional parameter</p>
+        </div>
+        <div>
+            <div class="row services-ctn">
+
+                @for(serviceDtl <- serviceDtls) {
+                    <div class="col-lg-3 col-md-6 col-sm-12 text-center outstand-service">
+                        <a href="@linkServiceDtl(serviceDtl.id.get)">
+                            <div class="card service-card">
+                                <img class="card-img-top" src="@serviceDtl.image" alt="@serviceDtl.name">
+                                <div class="card-body">
+                                    <p class="card-text">@serviceDtl.name</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

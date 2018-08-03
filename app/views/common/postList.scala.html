@@ -1,0 +1,93 @@
+@import repository.{Post, Page}
+@import helper._
+@(currentPage: Page[Post], currentOrderBy: Int, currentFilter: String)(implicit req: play.api.mvc.RequestHeader)
+
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+    routes.PostController.postList(newPage, newOrderBy.map { orderBy =>
+        if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+    }.getOrElse(currentOrderBy), currentFilter)
+}
+
+@views.html.base.layout(title = "PostList") {
+
+    <div class="content">
+            <!-- Search form -->
+        @form(action=routes.PostController.postList()) {
+        <div class="row search-box-ctn">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="input-group ml-2 mr-2 w-50 float-right">
+
+                        <input type="text" id="searchbox" name="f" value="@currentFilter" class="form-control" placeholder="Từ khoá tìm kiếm" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button type="submit" id="searchsubmit" class="btn btn-outline-secondary" type="button">&#8981;</button>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+        }
+
+        @Option(currentPage.items).filterNot(_.isEmpty).map { posts =>
+            <!-- Post List -->
+            <div class="row posts-ctn">
+                @posts.map {
+                    case post => {
+                        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                            <a href="@routes.PostController.post(post.id.get)">
+                                <div class="card post-card">
+                                    <img class="card-img-top" src="@post.image" alt="Card image cap">
+                                    <div class="card-body">
+                                        <p class="card-text">@post.name</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="row search-box-ctn">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            @currentPage.prev.map { page =>
+                                <li class="page-item">
+                                    <a class="page-link" href="@link(page)">&larr;</a>
+                                </li>
+                            }.getOrElse {
+                                <li class="page-item disabled">
+                                    <a class="page-link">&larr;</a>
+                                </li>
+                            }
+                            <li class="current">
+                                <a class="page-link">Mục @(currentPage.offset + 1) đến @(currentPage.offset + posts.size) / @currentPage.total</a>
+                            </li>
+                            @currentPage.next.map { page =>
+                                <li class="page-item">
+                                    <a class="page-link" href="@link(page)">&rarr;</a>
+                                </li>
+                            }.getOrElse {
+                                <li class="page-item disabled">
+                                    <a class="page-link">&rarr;</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        }.getOrElse {
+                <!-- No Post Message -->
+            <div class="row posts-ctn">
+                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                    <em>Không có tin nào về "@currentFilter". <br>Quý khách cần tìm hiểu thông tin,
+                        vui lòng liên hệ với Dr. Dương Spa để được giải đáp.
+                        <br>Rất mong được phục vụ quý khách.
+                    </em>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                    <img class="decorative-img" src="@routes.Assets.versioned("images/flower/pic1.png")">
+                </div>
+            </div>
+        }
+
+    </div>
+}

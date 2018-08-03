@@ -1,0 +1,60 @@
+@(title:String)(content: => Html)(implicit req: play.api.mvc.RequestHeader)
+
+@helper.javascriptRouter("jsRoutes")(
+    routes.javascript.ServiceGrpController.serviceGrp,
+    routes.javascript.PostController.delete,
+    routes.javascript.PostController.aPostList,
+    routes.javascript.ServiceGrpController.delete,
+    routes.javascript.ServiceDtlController.delete
+)
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>@title</title>
+        <link href="@routes.Assets.versioned("stylesheets/bootstrap.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("stylesheets/bootstrap-grid.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("stylesheets/admin.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("stylesheets/fontawesome.css")" rel="stylesheet">
+        <script src="@routes.Assets.versioned("javascripts/lib/jquery.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/popper.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/knockout.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/bootstrap.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/solid.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/fontawesome.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/bootstrap.bundle.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/sweetalert2.min.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/tinymce/tinymce.min.js")"></script>
+        @title match {
+            case "Post" => { <script src="@routes.Assets.versioned("javascripts/aPostList.js")"></script> }
+            case "Service Groups" => { <script src="@routes.Assets.versioned("javascripts/aServiceGrpList.js")"></script> }
+            case "Services" => { <script src="@routes.Assets.versioned("javascripts/aServiceList.js")"></script> }
+            case "Post Add" | "Post Edit" | "Service Grp Add" | "Service Grp Edit" | "Service Add" | "Service Edit"=> { <script src="@routes.Assets.versioned("javascripts/aCommon.js")"></script> }
+            case other => {}
+        }
+    </head>
+
+    <body>
+        <div class="wrapper">
+                <!-- Sidebar  -->
+            @admin.aSideBar()
+                <!-- Page Content  -->
+            <div id="content">
+
+                @content
+            </div>
+        </div>
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+        </script>
+    </body>
+</html>

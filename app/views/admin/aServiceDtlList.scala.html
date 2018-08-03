@@ -1,0 +1,102 @@
+@import repository.{ServiceDtl, ServiceGrp, Page}
+@import helper._
+@(currentPage: Page[(ServiceDtl, Option[ServiceGrp])], currentOrderBy: Int, currentFilter: String)(implicit req: play.api.mvc.RequestHeader)
+
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+    routes.ServiceDtlController.aServiceDtlList(newPage, newOrderBy.map { orderBy =>
+        if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+    }.getOrElse(currentOrderBy), currentFilter)
+}
+
+@views.html.admin.aLayout(title = "Services") {
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Danh sách bài viết</h5></div>
+                <div class="col-lg-6">
+                @form(action=routes.ServiceDtlController.aServiceDtlList()) {
+                    <div class="row search-box-ctn">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="input-group ml-2 mr-2 w-50 float-right">
+
+                                <input type="text" id="searchbox" name="f" value="@currentFilter" class="form-control" placeholder="Từ khoá tìm kiếm" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button type="submit" id="searchsubmit" class="btn btn-outline-secondary" type="button">&#8981;</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">Thứ tự</th>
+                        <th class="text-center">Tên dịch vụ</th>
+                        <th class="text-center">Thuộc nhóm</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Sửa</th>
+                        <th class="text-center">Xoá</th>
+                    </tr>
+                </thead>
+
+                @Option(currentPage.items).filterNot(_.isEmpty).map { services =>
+                <tbody>
+                    @services.map {
+                        case (service, serviceGrp) => {
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>@service.name</td>
+                                <td>@serviceGrp.map(_.name).getOrElse { <em>-</em> }</td>
+                                <td class="text-center">@service.createdDate</td>
+                                <td class="text-center"><a href="@routes.ServiceDtlController.aServiceDtlEdit(service.id.get)"><i class="far fa-edit"></i></a></td>
+                                <td class="text-center"><a class="service-delete" data-id="@service.id.get" href="#"><i class="far fa-trash-alt"></i></a></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+
+                <ul class="pagination">
+                    @currentPage.prev.map { page =>
+                    <li class="page-item">
+                        <a class="page-link" href="@link(page)">&larr;</a>
+                    </li>
+                    }.getOrElse {
+                        <li class="page-item disabled">
+                            <a class="page-link">&larr;</a>
+                        </li>
+                    }
+                <li class="current">
+                    <a class="page-link">Mục @(currentPage.offset + 1) đến @(currentPage.offset + services.size) / @currentPage.total</a>
+                </li>
+                    @currentPage.next.map { page =>
+                    <li class="page-item">
+                        <a class="page-link" href="@link(page)">&rarr;</a>
+                    </li>
+                    }.getOrElse {
+                        <li class="page-item disabled">
+                            <a class="page-link">&rarr;</a>
+                        </li>
+                    }
+                </ul>
+
+                }.getOrElse {
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="6">Không có dịch vụ nào</td>
+                        </tr>
+                    </tbody>
+                }
+
+
+            </table>
+            <a href="@routes.ServiceDtlController.aServiceDtlAdd()" class="btn btn-primary">Tạo dịch vụ mới</a>
+        </div>
+    </div>
+}

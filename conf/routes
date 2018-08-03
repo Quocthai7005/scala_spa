@@ -1,0 +1,46 @@
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.home
+GET     /post/:id                   controllers.PostController.post(id: Int)
+GET     /postlist                   controllers.PostController.postList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /service_group/:id          controllers.ServiceDtlController.serviceDtlList(id: Int)
+GET     /service_group              controllers.ServiceGrpController.serviceGrp
+GET     /service/:id                controllers.ServiceDtlController.serviceDtl(id: Int)
+GET     /messenger                  controllers.Application.messenger
+GET     /contact                    controllers.ContactController.contact
+# An example controller showing how to use dependency injection
+GET     /count                      controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET     /message                    controllers.AsyncController.message
+
+GET     /admin                      controllers.HomeController.aHome
+GET     /admin/postlist             controllers.PostController.aPostList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/postadd/new              controllers.PostController.aPostAdd
+POST    /admin/postadd              controllers.PostController.save
+GET     /admin/postedit/:id         controllers.PostController.aPostEdit(id: Int)
+GET     /admin/postupdate/:id         controllers.PostController.update(id: Int)
+GET     /admin/postdelete/:id       controllers.PostController.delete(id: Int)
+
+GET     /admin/servicegrouplist          controllers.ServiceGrpController.aServiceGrpList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/servicegroupadd/new         controllers.ServiceGrpController.aServiceGrpAdd
+GET     /admin/servicegroupadd         controllers.ServiceGrpController.save
+GET     /admin/servicegroupedit/:id          controllers.ServiceGrpController.aServiceGrpEdit(id: Int)
+GET     /admin/servicegroupupdate/:id          controllers.ServiceGrpController.update(id: Int)
+GET     /admin/servicegroupdelete/:id         controllers.ServiceGrpController.delete(id: Int)
+
+GET     /admin/servicelist          controllers.ServiceDtlController.aServiceDtlList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/serviceadd/new         controllers.ServiceDtlController.aServiceDtlAdd
+GET     /admin/serviceadd         controllers.ServiceDtlController.save
+GET     /admin/serviceedit/:id          controllers.ServiceDtlController.aServiceDtlEdit(id: Int)
+GET     /admin/serviceupdate/:id          controllers.ServiceDtlController.update(id: Int)
+GET     /admin/servicedelete/:id         controllers.ServiceDtlController.delete(id: Int)
+
+GET     /javascriptRoutes      controllers.Application.javascriptRoutes
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+      

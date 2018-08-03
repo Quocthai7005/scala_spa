@@ -1,0 +1,102 @@
+@import repository.{Post, Page}
+@import helper._
+@(currentPage: Page[Post], currentOrderBy: Int, currentFilter: String)(implicit req: play.api.mvc.RequestHeader)
+
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+    routes.PostController.aPostList(newPage, newOrderBy.map { orderBy =>
+        if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+    }.getOrElse(currentOrderBy), currentFilter)
+}
+
+@views.html.admin.aLayout(title = "Post") {
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Danh sách bài viết</h5></div>
+                <div class="col-lg-6">
+                @form(action=routes.PostController.aPostList()) {
+                    <div class="row search-box-ctn">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="input-group ml-2 mr-2 w-50 float-right">
+
+                                <input type="text" id="searchbox" name="f" value="@currentFilter" class="form-control" placeholder="Từ khoá tìm kiếm" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button type="submit" id="searchsubmit" class="btn btn-outline-secondary" type="button">&#8981;</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">Thứ tự</th>
+                        <th class="text-center">Tên bài</th>
+                        <th class="text-center">Tác giả</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Sửa</th>
+                        <th class="text-center">Xoá</th>
+                    </tr>
+                </thead>
+
+                @Option(currentPage.items).filterNot(_.isEmpty).map { posts =>
+                <tbody>
+                    @posts.map {
+                        case post => {
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>@post.name</td>
+                                <td>Nguyen Quoc Thai</td>
+                                <td class="text-center">@post.createdDate</td>
+                                <td class="text-center"><a href="@routes.PostController.aPostEdit(post.id.get)"><i class="far fa-edit"></i></a></td>
+                                <td class="text-center"><a class="post-delete" data-id="@post.id.get" href="#"><i class="far fa-trash-alt"></i></a></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+
+                    <ul class="pagination">
+                        @currentPage.prev.map { page =>
+                        <li class="page-item">
+                            <a class="page-link" href="@link(page)">&larr;</a>
+                        </li>
+                        }.getOrElse {
+                            <li class="page-item disabled">
+                                <a class="page-link">&larr;</a>
+                            </li>
+                        }
+                        <li class="current">
+                            <a class="page-link">Mục @(currentPage.offset + 1) đến @(currentPage.offset + posts.size) / @currentPage.total</a>
+                        </li>
+                        @currentPage.next.map { page =>
+                        <li class="page-item">
+                            <a class="page-link" href="@link(page)">&rarr;</a>
+                        </li>
+                        }.getOrElse {
+                            <li class="page-item disabled">
+                                <a class="page-link">&rarr;</a>
+                            </li>
+                        }
+                    </ul>
+
+                }.getOrElse {
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="6">Không có bài viết nào</td>
+                        </tr>
+                    </tbody>
+                }
+
+
+            </table>
+            <a href="@routes.PostController.aPostAdd()" class="btn btn-primary">Bài viết mới</a>
+        </div>
+    </div>
+}

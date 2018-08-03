@@ -1,0 +1,38 @@
+@import repository.{ServiceGrp}
+@(serviceGrpForm: Form[ServiceGrp])(implicit requestHeader: MessagesRequestHeader)
+@import helper._
+
+@import templating.BSVersion
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
+
+
+
+@views.html.admin.aLayout(title = "Service Grp Add") {
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Tạo nhóm dịch vụ mới</h5></div>
+                <div class="col-lg-6"></div>
+            </div>
+        </div>
+        <div class="card-body">
+        @b4.formCSRF(routes.ServiceGrpController.save()) {
+            @b4.text(serviceGrpForm("name"), '_label -> "Tên nhóm", '_help -> "0 đến 255 ký tự")
+            <!--@b4.text(serviceGrpForm("url"), '_label -> "Link truy cập", '_help -> "0 đến 255 ký tự, không dấu, không cách")-->
+            @b4.file(serviceGrpForm("image-in"), '_label -> "Hình đại diện", '_custom -> true, 'id -> "select-image", '_help -> "0 đến 100KB")
+            @b4.button('class -> "btn btn-info see-image"){ <i class="far fa-images"></i> Xem hình }
+            @b4.hidden(serviceGrpForm("image"), '_label -> "Hình đại diện", 'id -> "image")
+            @b4.textarea(serviceGrpForm("content"), '_label -> "Nội dung", 'maxlength -> "100", '_help -> "0 đến 150000 ký tự")
+            @b4.static(){ <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="confirm" required>
+                <label class="custom-control-label" for="confirm">
+                    Xác nhận tạo nhóm dịch vụ
+                </label>
+            </div>
+            }
+            @b4.buttonType("submit", 'class -> "btn btn-primary"){ <i class="far fa-save"></i> Lưu nhóm }
+        }
+        </div>
+    </div>
+}

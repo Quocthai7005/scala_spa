@@ -1,0 +1,44 @@
+@import repository.{Post}
+@(post: Option[Post], otherPosts: List[Post])(implicit req: play.api.mvc.RequestHeader)
+
+@link(id: Int) = @{
+    routes.PostController.post(id)
+}
+@views.html.base.layout(title = "Post") {
+
+    <div class="blank-content">
+        <div class="row">
+                <!-- Post detail -->
+            <div class="col-lg-9 col-sm-12 left-ctn">
+                @Option(post).map { postDtl =>
+                    <div class="left-content">
+                        <div class="detail-text">
+                            <div style="text-align: center;">
+                                <h2>@postDtl.get.name</h2>
+                            </div>
+                            <p>&#128336; @postDtl.get.createdDate</p>
+                            @Html(postDtl.get.content)
+                        </div>
+                    </div>
+                }
+            </div>
+                <!-- Other posts -->
+            <div class="col-lg-3 col-sm-12 right-ctn">
+                <div class="right-content">
+                    <div>
+                        @for(post <- otherPosts) {
+                            <div class="card post-card">
+                                <a href="@link(post.id.get)">
+                                    <img class="card-img-top" src="@post.image" alt="@post.name">
+                                    <div class="card-body">
+                                        <p class="card-text">@post.name</p>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

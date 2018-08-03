@@ -1,0 +1,100 @@
+@import repository.{ServiceGrp, Page}
+@import helper._
+@(currentPage: Page[ServiceGrp], currentOrderBy: Int, currentFilter: String)(implicit req: play.api.mvc.RequestHeader)
+
+@link(newPage: Int, newOrderBy: Option[Int] = None) = @{
+    routes.ServiceGrpController.aServiceGrpList(newPage, newOrderBy.map { orderBy =>
+        if(orderBy == scala.math.abs(currentOrderBy)) -currentOrderBy else orderBy
+    }.getOrElse(currentOrderBy), currentFilter)
+}
+
+@views.html.admin.aLayout(title = "Service Groups") {
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Danh sách nhóm dịch vụ</h5></div>
+                <div class="col-lg-6">
+                @form(action=routes.ServiceGrpController.aServiceGrpList()) {
+                    <div class="row search-box-ctn">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="input-group ml-2 mr-2 w-50 float-right">
+
+                                <input type="text" id="searchbox" name="f" value="@currentFilter" class="form-control" placeholder="Từ khoá tìm kiếm" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button type="submit" id="searchsubmit" class="btn btn-outline-secondary" type="button">&#8981;</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center">Thứ tự</th>
+                        <th class="text-center">Tên nhóm</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Sửa</th>
+                        <th class="text-center">Xoá</th>
+                    </tr>
+                </thead>
+
+                @Option(currentPage.items).filterNot(_.isEmpty).map { groups =>
+                <tbody>
+                    @groups.map {
+                        case group => {
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>@group.name</td>
+                                <td class="text-center">@group.createdDate</td>
+                                <td class="text-center"><a href="@routes.ServiceGrpController.aServiceGrpEdit(group.id.get)"><i class="far fa-edit"></i></a></td>
+                                <td class="text-center"><a class="group-delete" data-id="@group.id.get" href="#"><i class="far fa-trash-alt"></i></a></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+
+                <ul class="pagination">
+                    @currentPage.prev.map { page =>
+                    <li class="page-item">
+                        <a class="page-link" href="@link(page)">&larr;</a>
+                    </li>
+                    }.getOrElse {
+                        <li class="page-item disabled">
+                            <a class="page-link">&larr;</a>
+                        </li>
+                    }
+                <li class="current">
+                    <a class="page-link">Mục @(currentPage.offset + 1) đến @(currentPage.offset + groups.size) / @currentPage.total</a>
+                </li>
+                    @currentPage.next.map { page =>
+                    <li class="page-item">
+                        <a class="page-link" href="@link(page)">&rarr;</a>
+                    </li>
+                    }.getOrElse {
+                        <li class="page-item disabled">
+                            <a class="page-link">&rarr;</a>
+                        </li>
+                    }
+                </ul>
+
+                }.getOrElse {
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="6">Không có nhóm nào</td>
+                        </tr>
+                    </tbody>
+                }
+
+
+            </table>
+            <a href="@routes.ServiceGrpController.aServiceGrpAdd()" class="btn btn-primary">Tạo nhóm mới</a>
+        </div>
+    </div>
+}

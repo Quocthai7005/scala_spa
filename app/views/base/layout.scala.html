@@ -1,0 +1,53 @@
+@(title:String)(content: => Html)(implicit req: play.api.mvc.RequestHeader)
+
+@helper.javascriptRouter("jsRoutes")(
+    routes.javascript.ServiceGrpController.serviceGrp
+)
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>@title</title>
+        <link href="@routes.Assets.versioned("stylesheets/bootstrap.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("stylesheets/bootstrap-grid.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("stylesheets/common.css")" rel="stylesheet">
+        <link href="@routes.Assets.versioned("stylesheets/fontawesome.css")" rel="stylesheet">
+        <script src="@routes.Assets.versioned("javascripts/lib/jquery.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/knockout.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/bootstrap.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/fontawesome.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/lib/bootstrap.bundle.js")"></script>
+        <script src="@routes.Assets.versioned("javascripts/common.js")"></script>
+        <script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
+    </head>
+    <body>
+        @base.nav()
+        @base.carousel()
+        <div class="container">
+            @content
+        </div>
+    </body>
+    <footer>
+        <div class="container-fluid spa-footer">
+
+            <div id="spa-info row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="footer-text">
+                        <h2>Thông Tin Liên Hệ</h2>
+                        <p>Main Highway Otaki; 32 Wilson Street. Postcodes: 5022.
+                            <br>PO Boxes: PO Box 39100, Howick.
+                            <br><i class="fab fa-facebook-square"></i> https://www.facebook.com/skincareDrDuong
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="fb-customerchat" page_id="" minimized=""></div>
+            <div id="copyright">
+                © 2018 Nguyen Quoc Thai | Scala Dev
+            </div>
+        </div>
+    </footer>
+</html>
+
+
