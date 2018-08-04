@@ -30,7 +30,7 @@ class UtilsRepo @Inject()(dbapi: DBApi)(implicit ec: DatabaseExecutionContext) {
   private val db = dbapi.database("default")
 
   private[repository] val rowParser = {
-    get[Option[Int]]("micellaneous.id") ~ str("micellaneous.section") ~ str("micellaneous.name") ~ str("micellaneous.content")  ~ get[Boolean]("micellaneous.is_deleted") ~ get[Option[Date]]("micellaneous.created_date") ~ get[Option[Date]]("micellaneous.updated_date") map {
+    get[Option[Int]]("micellaneous.id") ~ str("micellaneous.section") ~ str("micellaneous.name") ~ str("micellaneous.content")  ~ get[Option[Boolean]]("micellaneous.is_deleted") ~ get[Option[Date]]("micellaneous.created_date") ~ get[Option[Date]]("micellaneous.updated_date") map {
       case id ~ section ~ name ~ content ~ deleted ~ createdDate ~ updatedDate
       => Micellaneous(id, section, name, content, deleted, createdDate, updatedDate)
     }

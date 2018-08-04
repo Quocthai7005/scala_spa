@@ -18,26 +18,34 @@ GET     /count                      controllers.CountController.count
 GET     /message                    controllers.AsyncController.message
 
 GET     /admin                      controllers.HomeController.aHome
-GET     /admin/postlist             controllers.PostController.aPostList(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET     /admin/postadd/new              controllers.PostController.aPostAdd
-POST    /admin/postadd              controllers.PostController.save
-GET     /admin/postedit/:id         controllers.PostController.aPostEdit(id: Int)
-GET     /admin/postupdate/:id         controllers.PostController.update(id: Int)
-GET     /admin/postdelete/:id       controllers.PostController.delete(id: Int)
+GET     /admin/post/list             controllers.PostController.aPostList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/post/add/new              controllers.PostController.aPostAdd
+POST    /admin/post/add              controllers.PostController.save
+GET     /admin/post/edit/:id         controllers.PostController.aPostEdit(id: Int)
+GET     /admin/post/update/:id         controllers.PostController.update(id: Int)
+GET     /admin/post/delete/:id       controllers.PostController.delete(id: Int)
 
-GET     /admin/servicegrouplist          controllers.ServiceGrpController.aServiceGrpList(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET     /admin/servicegroupadd/new         controllers.ServiceGrpController.aServiceGrpAdd
-GET     /admin/servicegroupadd         controllers.ServiceGrpController.save
-GET     /admin/servicegroupedit/:id          controllers.ServiceGrpController.aServiceGrpEdit(id: Int)
-GET     /admin/servicegroupupdate/:id          controllers.ServiceGrpController.update(id: Int)
-GET     /admin/servicegroupdelete/:id         controllers.ServiceGrpController.delete(id: Int)
+GET     /admin/servicegroup/list          controllers.ServiceGrpController.aServiceGrpList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/servicegroup/add/new         controllers.ServiceGrpController.aServiceGrpAdd
+GET     /admin/servicegroup/add         controllers.ServiceGrpController.save
+GET     /admin/servicegroup/edit/:id          controllers.ServiceGrpController.aServiceGrpEdit(id: Int)
+GET     /admin/servicegroup/update/:id          controllers.ServiceGrpController.update(id: Int)
+GET     /admin/servicegroup/delete/:id         controllers.ServiceGrpController.delete(id: Int)
 
-GET     /admin/servicelist          controllers.ServiceDtlController.aServiceDtlList(p:Int ?= 0, s:Int ?= 2, f ?= "")
-GET     /admin/serviceadd/new         controllers.ServiceDtlController.aServiceDtlAdd
-GET     /admin/serviceadd         controllers.ServiceDtlController.save
-GET     /admin/serviceedit/:id          controllers.ServiceDtlController.aServiceDtlEdit(id: Int)
-GET     /admin/serviceupdate/:id          controllers.ServiceDtlController.update(id: Int)
-GET     /admin/servicedelete/:id         controllers.ServiceDtlController.delete(id: Int)
+GET     /admin/service/list          controllers.ServiceDtlController.aServiceDtlList(p:Int ?= 0, s:Int ?= 2, f ?= "")
+GET     /admin/service/add/new         controllers.ServiceDtlController.aServiceDtlAdd
+GET     /admin/service/add         controllers.ServiceDtlController.save
+GET     /admin/service/edit/:id          controllers.ServiceDtlController.aServiceDtlEdit(id: Int)
+GET     /admin/service/update/:id          controllers.ServiceDtlController.update(id: Int)
+GET     /admin/service/delete/:id         controllers.ServiceDtlController.delete(id: Int)
+
+GET     /admin/messenger/edit         controllers.MessengerController.aMessengerEdit
+GET     /admin/messenger/update         controllers.MessengerController.update
+
+GET     /admin/user/edit        controllers.UserController.aUserEdit
+POST     /admin/user/update        controllers.UserController.update
+
+GET     /admin/login       controllers.UserController.login
 
 GET     /javascriptRoutes      controllers.Application.javascriptRoutes
 # Map static resources from the /public folder to the /assets URL path

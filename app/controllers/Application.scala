@@ -4,19 +4,20 @@ import javax.inject.{Inject, Singleton}
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.{JsValue, Json, Writes}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, ControllerComponents, MessagesAbstractController, MessagesControllerComponents}
 import play.api.routing.JavaScriptReverseRouter
 import repository._
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class Application @Inject()(cc: ControllerComponents,
-                            utilsService: UtilsRepo)(implicit ec: ExecutionContext) extends AbstractController(cc) {
+class Application @Inject()(cc: MessagesControllerComponents,
+                            utilsService: UtilsRepo)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   implicit val implicitFooWrites = new Writes[Micellaneous] {
     def writes(s: Micellaneous): JsValue = {
       Json.obj(
+        "id" -> s.id,
         "name" -> s.name,
         "content" -> s.content
       )

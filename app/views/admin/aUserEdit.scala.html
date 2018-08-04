@@ -1,0 +1,29 @@
+@import repository.Messenger
+@import repository.{User}
+@(userForm: Form[User])(implicit requestHeader: MessagesRequestHeader)
+@import templating.BSVersion
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
+
+@views.html.admin.aLayout(title = "User Edit") {
+
+
+
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Thay đổi mật khẩu Admin</h5></div>
+                <div class="col-lg-6"></div>
+            </div>
+        </div>
+        <div class="card-body">
+
+        @b4.formCSRF(routes.UserController.update) {
+            @b4.password(userForm("oldPassword"), '_label -> "Mật khẩu cũ", '_help -> "Vui lòng nhập chữ/số và đừng để trống")
+            @b4.password(userForm("newPassword"), '_label -> "Mật khẩu mới", '_help -> "Vui lòng nhập chữ/số và đừng để trống")
+            @b4.password(userForm("newConfirmPassword"), '_label -> "Nhập lại khẩu mới", '_help -> "Vui lòng nhập chữ/số và đừng để trống")
+            @b4.buttonType("submit", 'class -> "btn btn-primary"){ <i class="far fa-save"></i> Lưu thay đổi }
+        }
+        </div>
+    </div>
+}

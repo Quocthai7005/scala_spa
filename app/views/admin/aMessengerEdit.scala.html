@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
+@import repository.Messenger
+@(messengerForm: Form[Messenger])(implicit requestHeader: MessagesRequestHeader)
+@import templating.BSVersion
+@implicitFieldConstructor = @{ b4.vertical.fieldConstructor() }
 
-    </body>
-</html>
+@views.html.admin.aLayout(title = "Messenger Info Edit") {
+
+
+
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-lg-6"><h5>Sửa thông tin Facebook Messenger App</h5></div>
+                <div class="col-lg-6"></div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            @b4.formCSRF(routes.MessengerController.update) {
+                @b4.static(){ <div class="form-group">
+                                <label>
+                                    * Chỉnh sửa thông tin sai sẽ không thể hiển thị ứng dụng Facebook Messenger trên website, vui lòng đảm bảo dữ liệu nhập vào là đúng.
+                                </label>
+                            </div>
+                }
+                @b4.text(messengerForm("appId"), '_label -> "App Id", '_help -> "Vui lòng nhập chữ/số và đừng để trống")
+                @b4.text(messengerForm("pageId"), '_label -> "Page Id", '_help -> "Vui lòng nhập chữ/số và đừng để trống")
+                @b4.checkbox(messengerForm("autoLogAppEvents"), '_custom -> true, '_text -> "Auto Log App Events")
+                @b4.checkbox(messengerForm("xfbml"), '_custom -> true, '_text -> "Xfbml" )
+                @b4.checkbox(messengerForm("minimized"), '_custom -> true, '_text -> "Minimized")
+                @b4.text(messengerForm("version"), '_label -> "Version", '_help -> "Vui lòng nhập chữ/số và đừng để trống")
+                @b4.static(){ <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="confirm" required>
+                    <label class="custom-control-label" for="confirm">
+                        Xác nhận sửa thông tin Messenger
+                    </label>
+                </div>
+                }
+                @b4.buttonType("submit", 'class -> "btn btn-primary"){ <i class="far fa-save"></i> Lưu thay đổi }
+            }
+        </div>
+    </div>
+}
